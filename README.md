@@ -21,3 +21,26 @@ WAS(sendError 호출 기록 확인) <- 필터 <- 서블릿 <- 인터셉터 <- �
 ---
 ## 스프링 부트 -오류 페이지
 ### 스프링 부트는 /error라는 경로로 기본 오류 페이지를 설정한다. 만약 서블릿 밖으로 예외가 발생하거나, response.sendError()가 호출되면 모든 오류는 /error를 호출하게 된다.
+</br>
+
+---
+## API 예외 처리
+</br>
+
+### 스프링이 제공하는 ExceptionResolver
+
+1. ExceptionHandlerExceptionResolver
+2. ResponseStatusExceptionResolver : HTTP 상태코드를 지정해준다
+3. DefaultHandlerExceptionResolver : 스프링 내부 기본 예외를 처리한다.
+
+## Code Feature
+
+```
+@ExceptionHandler
+ public ResponseEntity<ErrorResult> userExHandle(UserException e) {
+ log.error("[exceptionHandle] ex", e);
+ ErrorResult errorResult = new ErrorResult("USER-EX", e.getMessage());
+ return new ResponseEntity<>(errorResult, HttpStatus.BAD_REQUEST);
+ }
+ ```
+ ### @ExceptionHandler 선언을 하고, 해당 컨트롤러에서 처리하고 싶은 예외를 지정해주면, 해당 컨트롤러에서 예외가 발생하면 이 메서드가 호출이 된다.
